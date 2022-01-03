@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   kvm-backend:
-    build: backend
+    build: Backend
     environment:
       - DATABASE_URL=/var/openfairdb/openfairdb.sqlite
       - MAIL_GATEWAY_SENDER_ADDRESS=no-reply@alexreiner.de
@@ -12,7 +12,7 @@ services:
     profiles:
       - donotstart
   kvm-frontend:
-    build: frontend
+    build: Frontend
     labels:
       - traefik.http.routers.${ROUTE}.rule=Host(`${HOST}`)
       - traefik.http.routers.${ROUTE}.tls=true
