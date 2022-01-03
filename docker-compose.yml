@@ -23,8 +23,6 @@ services:
       - traefik.http.services.${DEV_ROUTE}.loadbalancer.server.port=3001
     networks:
       - web
-    profiles:
-      - donotstart
     # For the sake of completeness #
     #ports:
     #  - "3001:3001"
