@@ -11,19 +11,37 @@ services:
       - ./data/openfairdb:/var/openfairdb/
     profiles:
       - donotstart
-  kvm-frontend:
-    build: Frontend
+
+  kvm-frontend-dev:
+    build: 
+      context: ./Frontend
+      dockerfile: Dockerfile-dev
     labels:
-      - traefik.http.routers.${ROUTE}.rule=Host(`${HOST}`)
-      - traefik.http.routers.${ROUTE}.tls=true
-      - traefik.http.routers.${ROUTE}.tls.certresolver=lets-encrypt
-      - traefik.http.services.${ROUTE}.loadbalancer.server.port=3001
+      - traefik.http.routers.${DEV_ROUTE}.rule=Host(`${DEV_HOST}`)
+      - traefik.http.routers.${DEV_ROUTE}.tls=true
+      - traefik.http.routers.${DEV_ROUTE}.tls.certresolver=lets-encrypt
+      - traefik.http.services.${DEV_ROUTE}.loadbalancer.server.port=3001
     networks:
       - web
-    # For the sake of completenenss #
+    # For the sake of completeness #
     #ports:
     #  - "3001:3001"
+
+  kvm-frontend-prod:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile-prod
+    labels:
+      - traefik.http.routers.${PROD_ROUTE}.rule=Host(`${PROD_HOST}`)
+      - traefik.http.routers.${PROD_ROUTE}.tls=true
+      - traefik.http.routers.${PROD_ROUTE}.tls.certresolver=lets-encrypt
+      - traefik.http.services.${PROD_ROUTE}.loadbalancer.server.port=3000
+    networks:
+      - web
+    # For the sake of completeness #
+    #ports:
     #  - "3000:3000"
+    
 
 networks:
   web:
