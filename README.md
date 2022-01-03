@@ -11,6 +11,13 @@ The frontend and backend for [Karte von morgen](https://github.com/kartevonmorge
 
 ## Quick start
 
+You can remove *labels* and *networks* - we are using Traefik as Reverse Proxy with http3 enabled.
+
+If you want to use the network *web*, you can create it with
+```sh
+docker network create web
+```
+
 Clone this repo and start it with
 ```sh
 docker-compose up -d

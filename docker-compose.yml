@@ -13,6 +13,19 @@ services:
       - donotstart
   kvm-frontend:
     build: frontend
-    ports:
-      - "3000:3001"
+    labels:
+      - traefik.http.routers.${ROUTE}.rule=Host(`${HOST}`)
+      - traefik.http.routers.${ROUTE}.tls=true
+      - traefik.http.routers.${ROUTE}.tls.certresolver=lets-encrypt
+      - traefik.http.services.${ROUTE}.loadbalancer.server.port=3001
+    networks:
+      - web
+    # For the sake of completenenss #
+    #ports:
+    #  - "3001:3001"
+    #  - "3000:3000"
+
+networks:
+  web:
+    external: true
   

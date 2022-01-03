@@ -19,7 +19,7 @@ RUN python3 -m venv venv
 RUN . ./venv/bin/activate
 RUN pip3 install -r requirements.txt
 
-RUN python3 tag-frequency-cron.py --dev --sync-once --log-level debug
+RUN python3 tag-frequency-cron.py --dev --fetch-all-on-start --sync-once --log-level debug
 
 WORKDIR /frontend
 
