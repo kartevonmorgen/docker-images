@@ -7,6 +7,9 @@ RUN ln -sf python3 /usr/bin/python
 
 RUN pip3 install --no-cache --upgrade pip setuptools
 
+
+RUN pip3 install --no-cache --upgrade pip setuptools
+
 WORKDIR /frontend
 RUN git clone https://github.com/kartevonmorgen/kartevonmorgen-v1 .
 
@@ -14,11 +17,10 @@ RUN yarn install
 RUN yarn run build:production
 
 # Install Frontend
-#WORKDIR /frontend/scripts/python
-#RUN python3 -m venv venv
-#RUN . ./venv/bin/activate
-#RUN pip3 install -r requirements.txt
+WORKDIR /frontend/scripts/python
+RUN python3 -m venv venv
+RUN . ./venv/bin/activate
+RUN pip3 install -r requirements.txt
 
-#RUN python3 tag-frequency-cron.py --fetch-all-on-start --sync-once
-
-CMD ["yarn", "run", "start:production"]
+CMD ["python3", "tag-frequency-cron.py", "--fetch-all-on-start", "--interval-for-all-tags", "300", "--interval-for-least-used-tags", "60"]
+#CMD ["pm2-runtime", "start", "'yarn run start:production'", "--name", "kartevonmorgen"]

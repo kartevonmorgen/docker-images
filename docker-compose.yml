@@ -23,6 +23,8 @@ services:
       - traefik.http.services.${DEV_ROUTE}.loadbalancer.server.port=3001
     networks:
       - web
+    profiles:
+      - donotstart
     # For the sake of completeness #
     #ports:
     #  - "3001:3001"
@@ -36,14 +38,26 @@ services:
       - traefik.http.routers.${PROD_ROUTE}.tls=true
       - traefik.http.routers.${PROD_ROUTE}.tls.certresolver=lets-encrypt
       - traefik.http.services.${PROD_ROUTE}.loadbalancer.server.port=3000
+    volumes:
+      - frontend_db:/frontend/db
     networks:
       - web
+    depends_on:
+      - kvm-frotend-prod-tagsync
     # For the sake of completeness #
     #ports:
     #  - "3000:3000"
-    
+  kvm-frontend-prod-tagsync:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile-tagsync
+    volumes:
+      - frontend_db:/frontend/db
+    labels:
+      - traefik.enable=false
 
 networks:
   web:
     external: true
-  
+volumes:
+  frontend_db:

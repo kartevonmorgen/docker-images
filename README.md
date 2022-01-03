@@ -18,6 +18,11 @@ If you want to use the network *web*, you can create it with
 docker network create web
 ```
 
+### Step 1
+If you want to run the productive version, first you have to build 
+
+
+
 Clone this repo and start it with
 ```sh
 docker-compose up -d
