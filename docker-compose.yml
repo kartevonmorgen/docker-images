@@ -43,7 +43,7 @@ services:
     networks:
       - web
     depends_on:
-      - kvm-frotend-prod-tagsync
+      - kvm-frontend-prod-tagsync
     # For the sake of completeness #
     #ports:
     #  - "3000:3000"
