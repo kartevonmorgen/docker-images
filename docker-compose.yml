@@ -23,16 +23,15 @@ services:
       - traefik.http.services.${DEV_ROUTE}.loadbalancer.server.port=3001
     networks:
       - web
-    # For the sake of completeness #
-    #ports:
-    #  - "3001:3001"
 
   kvm-frontend-prod:
     build:
       context: ./Frontend
       dockerfile: Dockerfile-prod
+    environment:
+      - NEXT_PUBLIC_SELF_API='https://new.kartevonmorgen.org'
     labels:
-      - traefik.http.routers.${PROD_ROUTE}.rule=Host(`${PROD_HOST}`)
+      - traefik.http.routers.${PROD_ROUTE}.rule=Host(`${PROD_HOST}`) && !PathPrefix(`/public`)
       - traefik.http.routers.${PROD_ROUTE}.tls=true
       - traefik.http.routers.${PROD_ROUTE}.tls.certresolver=lets-encrypt
       - traefik.http.services.${PROD_ROUTE}.loadbalancer.server.port=3000
@@ -42,9 +41,7 @@ services:
       - web
     depends_on:
       - kvm-frontend-prod-tagsync
-    # For the sake of completeness #
-    #ports:
-    #  - "3000:3000"
+
   kvm-frontend-prod-tagsync:
     build:
       context: ./Frontend
@@ -53,6 +50,34 @@ services:
       - frontend_db:/frontend/db
     labels:
       - traefik.enable=false
+
+  kvm-syncthing:
+    image: syncthing/syncthing
+    restart: unless-stopped
+    labels:
+      - traefik.http.routers.kvm-syncthing.rule=Host(`${SYNCTHING_HOST}`)
+      - traefik.http.services.kvm-syncthing.loadbalancer.server.port=8384
+      - traefik.http.routers.kvm-syncthing.tls=true
+      - traefik.http.routers.kvm-syncthing.tls.certresolver=lets-encrypt
+    volumes:
+      - ./data/syncthing:/var/syncthing
+    networks:
+      - web
+    ports:
+      - 22000:22000/tcp
+      - 22000:22000/udp
+
+  kvm-syncthing-public:
+    image: 'httpd:latest'
+    labels:
+      - traefik.http.routers.kvm-syncthing-public.rule=Host(`${PROD_HOST}`) && PathPrefix(`/public`)
+      - traefik.http.routers.kvm-syncthing-public.tls=true
+      - traefik.http.routers.kvm-syncthing-public.tls.certresolver=lets-encrypt
+      - traefik.port=80
+    networks:
+      - web
+    volumes:
+      - './data/syncthing:/usr/local/apache2/htdocs/public/'
 
 networks:
   web:
