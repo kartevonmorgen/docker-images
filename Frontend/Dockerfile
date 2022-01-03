@@ -1,19 +1,17 @@
-FROM alpine:latest
+FROM node:16-buster
 
 ENV PYTHONUNBUFFERED=1
-RUN apk update
-RUN apk add --update --no-cache git nodejs npm python3 python3-dev build-base libffi-dev
+RUN apt-get update
+RUN apt-get install -y git python3 python3-dev build-essential libc6 libffi-dev python3-pip python3-venv
 RUN ln -sf python3 /usr/bin/python
 
-RUN python3 -m ensurepip
 RUN pip3 install --no-cache --upgrade pip setuptools
-
-RUN npm install --global yarn
 
 RUN git clone https://github.com/kartevonmorgen/kartevonmorgen-v1 /frontend
 WORKDIR /frontend
 
 RUN yarn install
+RUN yarn run build:dev
 
 # Install Frontend
 WORKDIR /frontend/scripts/python
@@ -23,11 +21,7 @@ RUN pip3 install -r requirements.txt
 
 RUN python3 tag-frequency-cron.py --dev --sync-once --log-level debug
 
-RUN npm install pm2 -g
-
 WORKDIR /frontend
-RUN yarn run build:dev
 
-
-CMD ["yarn", "run", "start:production"]
+CMD ["yarn", "run", "start:dev"]
 #CMD ["pm2-runtime", "start", "'yarn run start:production'", "--name", "kartevonmorgen"]

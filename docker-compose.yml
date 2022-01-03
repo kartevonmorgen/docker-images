@@ -2,7 +2,17 @@ version: "3.9"
 services:
   kvm-backend:
     build: backend
+    environment:
+      - DATABASE_URL=/var/openfairdb/openfairdb.sqlite
+      - MAIL_GATEWAY_SENDER_ADDRESS=no-reply@alexreiner.de
     ports:
       - "6767:8000"
     volumes:
-      - ./data/openfairdb:/var/openfairdb
+      - ./data/openfairdb:/var/openfairdb/
+    profiles:
+      - donotstart
+  kvm-frontend:
+    build: frontend
+    ports:
+      - "3000:3001"
+  

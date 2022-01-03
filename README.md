@@ -1,6 +1,6 @@
 # Frontend and Backend Server for Docker
 
-ONLY BACKEND WORKS!
+ONLY FRONTEND WORKS!
 
 The frontend and backend for [Karte von morgen](https://github.com/kartevonmorgen/kartevonmorgen/) is based on the documentation [Open Fair DB](https://github.com/kartevonmorgen/openfairdb) and [Karte von morgen](https://github.com/kartevonmorgen/kartevonmorgen.ts)
 
@@ -23,6 +23,9 @@ The images were build local with the Dockerfiles.
 Docker Compose uses a local folder as storage for the backend database at ./data/openfairdb/ which points to /var/openfairdb
 
 ## Ports
+
+### Frontend
+The Frontend uses Port 3000 [PROD] or 3001 [DEV]
 
 ### Backend
 The backend uses Port 8000 which is forwarded to 6767.
