@@ -37,7 +37,6 @@ services:
       - traefik.http.services.${PROD_ROUTE}.loadbalancer.server.port=3000
     volumes:
       - frontend_db:/frontend/db
-      - ./config/server.start.production.js:/frontend/server.start.production.js
     networks:
       - web
     depends_on:
