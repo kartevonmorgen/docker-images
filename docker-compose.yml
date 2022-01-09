@@ -30,6 +30,8 @@ services:
     build:
       context: ./Frontend
       dockerfile: Dockerfile-prod
+      args:
+        NEXT_PUBLIC_SELF_DOMAIN: https://${PROD_HOST}
     environment:
       - NEXT_PUBLIC_SELF_DOMAIN=https://${PROD_HOST}
     labels:

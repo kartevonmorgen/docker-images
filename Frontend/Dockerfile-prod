@@ -1,6 +1,8 @@
 FROM node:16-buster
 
 ENV PYTHONUNBUFFERED=1
+ENV NEXT_PUBLIC_SELF_DOMAIN=$NEXT_PUBLIC_SELF_DOMAIN
+
 RUN apt-get update
 RUN apt-get install -y git python3 python3-dev build-essential libc6 libffi-dev python3-pip python3-venv
 RUN ln -sf python3 /usr/bin/python
