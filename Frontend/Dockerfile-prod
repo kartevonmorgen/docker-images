@@ -21,4 +21,4 @@ RUN yarn run build:production
 
 #RUN python3 tag-frequency-cron.py --fetch-all-on-start --sync-once
 
-CMD ["yarn", "cache", "clear", "&&", "yarn", "run", "start:production"]
+CMD ["yarn", "cache", "clean", "&&", "yarn", "run", "start:production"]
