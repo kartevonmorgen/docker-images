@@ -23,13 +23,15 @@ services:
       - traefik.http.services.${DEV_ROUTE}.loadbalancer.server.port=3001
     networks:
       - web
+    profiles:
+      - donotstartdev
 
   kvm-frontend-prod:
     build:
       context: ./Frontend
       dockerfile: Dockerfile-prod
     environment:
-      - NEXT_PUBLIC_SELF_API='https://new.kartevonmorgen.org'
+      - NEXT_PUBLIC_SELF_DOMAIN=https://${PROD_HOST}
     labels:
       - traefik.http.routers.${PROD_ROUTE}.rule=Host(`${PROD_HOST}`) && !PathPrefix(`/public`)
       - traefik.http.routers.${PROD_ROUTE}.tls=true
