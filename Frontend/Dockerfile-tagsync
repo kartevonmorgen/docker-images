@@ -7,9 +7,6 @@ RUN ln -sf python3 /usr/bin/python
 
 RUN pip3 install --no-cache --upgrade pip setuptools
 
-
-RUN pip3 install --no-cache --upgrade pip setuptools
-
 WORKDIR /frontend
 RUN git clone https://github.com/kartevonmorgen/kartevonmorgen-v1 .
 

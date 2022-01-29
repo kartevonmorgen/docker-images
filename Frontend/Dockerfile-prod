@@ -1,5 +1,7 @@
 FROM node:16-buster
 
+ARG NEXT_PUBLIC_SELF_DOMAIN
+
 ENV PYTHONUNBUFFERED=1
 ENV NEXT_PUBLIC_SELF_DOMAIN=$NEXT_PUBLIC_SELF_DOMAIN
 
@@ -15,7 +17,7 @@ RUN git clone https://github.com/kartevonmorgen/kartevonmorgen-v1 .
 RUN yarn install
 RUN yarn run build:production
 
-# Install Frontend
+# Install tag sync
 #WORKDIR /frontend/scripts/python
 #RUN python3 -m venv venv
 #RUN . ./venv/bin/activate
