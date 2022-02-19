@@ -41,6 +41,7 @@ services:
       - traefik.http.services.${PROD_ROUTE}.loadbalancer.server.port=3000
     volumes:
       - frontend_db:/frontend/db
+      - './data/syncthing:/frontend/public/'
     networks:
       - web
     depends_on:
