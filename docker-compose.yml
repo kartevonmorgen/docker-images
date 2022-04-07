@@ -10,7 +10,7 @@ services:
       - NEXT_PUBLIC_SELF_DOMAIN=https://${PROD_HOST}
     volumes:
       - frontend_db:/frontend/db
-      - './data/syncthing:/frontend/public/'
+      - './data/public:/frontend/public/'
     depends_on:
       - kvm-frontend-prod-tagsync
     ports:
@@ -27,7 +27,7 @@ services:
     image: syncthing/syncthing
     restart: unless-stopped
     volumes:
-      - ./data/syncthing:/var/syncthing
+      - ./data/public:/var/syncthing
     ports:
       - 22000:22000/tcp
       - 22000:22000/udp
