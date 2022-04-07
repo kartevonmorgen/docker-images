@@ -1,37 +1,13 @@
 version: "3.9"
 services:
-  kvm-backend:
-    build: Backend
-    environment:
-      - DATABASE_URL=/var/openfairdb/openfairdb.sqlite
-      - MAIL_GATEWAY_SENDER_ADDRESS=no-reply@alexreiner.de
-    ports:
-      - "6767:8000"
-    volumes:
-      - ./data/openfairdb:/var/openfairdb/
-    profiles:
-      - donotstart
-
-  kvm-frontend-dev:
-    build: 
-      context: ./Frontend
-      dockerfile: Dockerfile-dev
-    labels:
-      - traefik.http.routers.${DEV_ROUTE}.rule=Host(`${DEV_HOST}`)
-      - traefik.http.routers.${DEV_ROUTE}.tls=true
-      - traefik.http.routers.${DEV_ROUTE}.tls.certresolver=lets-encrypt
-      - traefik.http.services.${DEV_ROUTE}.loadbalancer.server.port=3001
-    networks:
-      - web
-    profiles:
-      - donotstartdev
-
   kvm-frontend-prod:
     build:
       context: ./Frontend
       dockerfile: Dockerfile-prod
       args:
         NEXT_PUBLIC_SELF_DOMAIN: https://${PROD_HOST}
+    ports:
+      - "127.0.0.1:3000:3000"
     environment:
       - NEXT_PUBLIC_SELF_DOMAIN=https://${PROD_HOST}
     labels:
@@ -71,6 +47,7 @@ services:
     ports:
       - 22000:22000/tcp
       - 22000:22000/udp
+      - "127.0.0.1:3001:8384"
 
   kvm-syncthing-public:
     image: 'httpd:latest'
@@ -79,6 +56,8 @@ services:
       - traefik.http.routers.kvm-syncthing-public.tls=true
       - traefik.http.routers.kvm-syncthing-public.tls.certresolver=lets-encrypt
       - traefik.port=80
+    ports:
+      - "127.0.0.1:3002:80"
     networks:
       - web
     volumes:
