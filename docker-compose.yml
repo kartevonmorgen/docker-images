@@ -6,8 +6,6 @@ services:
       dockerfile: Dockerfile-prod
       args:
         NEXT_PUBLIC_SELF_DOMAIN: https://${PROD_HOST}
-    networks:
-      - internal-proxy
     environment:
       - NEXT_PUBLIC_SELF_DOMAIN=https://${PROD_HOST}
     volumes:
@@ -32,18 +30,6 @@ services:
       - 22000:22000/tcp
       - 22000:22000/udp
       - "127.0.0.1:3001:8384"
-
-  kvm-web:
-    image: 'httpd:latest'
-    ports:
-      - "127.0.0.1:3002:80"
-    networks:
-      - internal-proxy
-    volumes:
-      - './data/syncthing:/usr/local/apache2/htdocs/public/'
-      - './data/config/httpd.conf:/usr/local/apache2/conf/httpd.conf'
-  
-networks:
-  internal-proxy:
+      
 volumes:
   frontend_db:
