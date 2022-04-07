@@ -6,8 +6,8 @@ services:
       dockerfile: Dockerfile-prod
       args:
         NEXT_PUBLIC_SELF_DOMAIN: https://${PROD_HOST}
-    ports:
-      - "127.0.0.1:3000:3000"
+    networks:
+      - internal-proxy
     environment:
       - NEXT_PUBLIC_SELF_DOMAIN=https://${PROD_HOST}
     volumes:
@@ -22,8 +22,6 @@ services:
       dockerfile: Dockerfile-tagsync
     volumes:
       - frontend_db:/frontend/db
-    labels:
-      - traefik.enable=false
 
   kvm-syncthing:
     image: syncthing/syncthing
@@ -35,12 +33,15 @@ services:
       - 22000:22000/udp
       - "127.0.0.1:3001:8384"
 
-  kvm-syncthing-public:
+  kvm-web:
     image: 'httpd:latest'
     ports:
       - "127.0.0.1:3002:80"
+    networks:
+      - internal-proxy
     volumes:
       - './data/syncthing:/usr/local/apache2/htdocs/public/'
-
+      - './data/config/httpd.conf:/usr/local/apache2/conf/httpd.conf'
+  
 volumes:
   frontend_db:
