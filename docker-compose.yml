@@ -13,6 +13,8 @@ services:
       - './data/syncthing:/frontend/public/'
     depends_on:
       - kvm-frontend-prod-tagsync
+    ports:
+      - "127.0.0.1:3000:3000"
 
   kvm-frontend-prod-tagsync:
     build:
@@ -30,6 +32,6 @@ services:
       - 22000:22000/tcp
       - 22000:22000/udp
       - "127.0.0.1:3001:8384"
-      
+
 volumes:
   frontend_db:
