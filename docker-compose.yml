@@ -43,5 +43,7 @@ services:
       - './data/syncthing:/usr/local/apache2/htdocs/public/'
       - './data/config/httpd.conf:/usr/local/apache2/conf/httpd.conf'
   
+networks:
+  internal-proxy:
 volumes:
   frontend_db:
